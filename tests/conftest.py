@@ -18,7 +18,7 @@ for package_name, package_path in (
 
 
 def _stub_home_assistant() -> None:
-    """Provide the few Home Assistant names the coordinators import.
+    """Provide the few Home Assistant names the coordinators and events import.
 
     The stubs replace an installed Home Assistant too, so the coordinator
     tests behave the same with or without one.
@@ -37,11 +37,29 @@ def _stub_home_assistant() -> None:
         def async_set_updated_data(self, data: Any) -> None:
             self.data = data
 
+    class EventEntity:
+        async def async_added_to_hass(self) -> None:
+            return None
+
+        async def async_will_remove_from_hass(self) -> None:
+            return None
+
+        def _trigger_event(
+            self, event_type: str, event_attributes: dict[str, Any] | None = None
+        ) -> None:
+            return None
+
+        def async_write_ha_state(self) -> None:
+            return None
+
     modules = {
         "homeassistant": {},
+        "homeassistant.components": {},
+        "homeassistant.components.event": {"EventEntity": EventEntity},
         "homeassistant.config_entries": {"ConfigEntry": object},
         "homeassistant.core": {"HomeAssistant": object},
         "homeassistant.helpers": {},
+        "homeassistant.helpers.entity_platform": {"AddEntitiesCallback": object},
         "homeassistant.helpers.update_coordinator": {
             "DataUpdateCoordinator": DataUpdateCoordinator
         },
