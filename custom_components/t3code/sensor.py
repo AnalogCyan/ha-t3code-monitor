@@ -18,7 +18,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import T3CodeCoordinator
-from .const import DOMAIN, SESSION_STATUSES
+from .const import DOMAIN, THREAD_STATUSES
 from .usage_coordinator import T3UsageCoordinator
 from .usage_data import UsageLimitWindow, UsagePeriod
 
@@ -34,18 +34,12 @@ DESCRIPTIONS = [
     *[
         T3CodeSensorDescription(
             key=f"session_{status}",
-            name=f"Sessions {status}",
+            name=f"Threads {status.replace('_', ' ')}",
             icon="mdi:robot",
             metric=f"session_{status}",
         )
-        for status in SESSION_STATUSES
+        for status in THREAD_STATUSES
     ],
-    T3CodeSensorDescription(
-        key="session_missing",
-        name="Threads without session",
-        icon="mdi:robot-off",
-        metric="session_missing",
-    ),
     T3CodeSensorDescription(
         key="pending_approvals",
         name="Pending approvals",
@@ -60,7 +54,7 @@ DESCRIPTIONS = [
     ),
     T3CodeSensorDescription(
         key="running_turns",
-        name="Running turns",
+        name="Active runs",
         icon="mdi:progress-clock",
         metric="running_turns",
     ),

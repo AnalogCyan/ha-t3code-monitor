@@ -39,12 +39,14 @@ def test_pushed_transitions_write_event_state(
         coordinator._environments["env-a"],
         [
             {
-                "kind": "thread-upserted",
+                "kind": "thread.updated",
                 "sequence": 1,
+                "location": "active",
                 "thread": {
                     "id": "thread-1",
-                    "session": {"status": "running"},
-                    "hasPendingApprovals": True,
+                    "status": "running",
+                    "latestRunId": "run-1",
+                    "pendingRuntimeRequest": {"id": "request-1", "kind": "command"},
                 },
             }
         ],
