@@ -67,5 +67,6 @@ class T3CodeEventEntity(EventEntity):
     def _handle_event(self, event_type: str) -> Callable[[dict[str, Any]], None]:
         def trigger(event_data: dict[str, Any]) -> None:
             self._trigger_event(event_type, event_data)
+            self.async_write_ha_state()
 
         return trigger
